@@ -1,4 +1,11 @@
+# syntax=docker/dockerfile:1
+
 FROM python:3-slim
+
+LABEL vendor="The Concourse Group Inc DBA MetaBronx" \
+      authors="Elias Gabriel <me@eliasfgabriel.com>"
+
+COPY .ccache-files /root/.cache/ccache
 
 SHELL [ "/bin/bash", "-eo", "pipefail", "-c" ]
 RUN apt-get update && \
@@ -14,7 +21,8 @@ RUN apt-get update && \
         libelf-dev \
         bc \
         binutils \
-        kmod && \
+        kmod \
+        ccache && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ## download latest WSL kernel
@@ -24,12 +32,12 @@ RUN apt-get update && \
             jq -r '.tarball_url')" | tar -xz && \
     ## configure and build the kernel
     ### WireGuard needs the ability to attach packets to "marks" and those
-    ### "marks" to connections. The latter function is exposed via the CONNMARK iptables
-    ### extension, but needs to be enabled when WSL builds the Linux kernel module
+    ### "marks" to connections. The latter function is exposed via CONNMARK,
+    ### which needs to be enabled when building the Linux kernel.
     echo "> Configuring and building..." && \
     cd microsoft-WSL2-Linux-Kernel* && \
     echo -e "CONFIG_NETFILTER_XT_MATCH_CONNMARK=y\nCONFIG_NETFILTER_XT_CONNMARK=y" >> \
         Microsoft/config-wsl && \
-    make -j "$(nproc)" KCONFIG_CONFIG=Microsoft/config-wsl && \
+    make CC="ccache gcc" -j"$(nproc)" KCONFIG_CONFIG=Microsoft/config-wsl && \
     mv arch/x86/boot/bzImage /kernel && \
     make distclean
