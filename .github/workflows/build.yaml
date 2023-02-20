@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     steps:
       - name: Download repository
         uses: actions/checkout@v3
@@ -30,6 +33,7 @@ jobs:
           push: true
           tags: ghcr.io/metabronx/blackstrap-wsl-kernel:latest
       - name: Extract cache files
+        if: always()
         run: |
           docker create --name wsl-kernel ghcr.io/metabronx/blackstrap-wsl-kernel:latest
           docker cp wsl-kernel:/root/.cache/ccache .ccache-files

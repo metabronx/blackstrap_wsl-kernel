@@ -2,12 +2,16 @@
 
 FROM python:3-slim
 
-LABEL vendor="The Concourse Group Inc DBA MetaBronx" \
-      authors="Elias Gabriel <me@eliasfgabriel.com>"
-
-COPY .ccache-files /root/.cache/ccache
+LABEL org.opencontainers.image.description="A WSL kernel for CONNMARK applications."
+LABEL org.opencontainers.image.vendor="The Concourse Group Inc DBA MetaBronx"
+LABEL org.opencontainers.image.authors="Elias Gabriel <me@eliasfgabriel.com>"
+LABEL org.opencontainers.image.source="https://github.com/metabronx/blackstrap-wsl-kernel"
+# LABEL org.opencontainers.image.licenses="MIT"
 
 SHELL [ "/bin/bash", "-eo", "pipefail", "-c" ]
+ENV DEBIAN_FRONTEND="noninteractive"
+
+COPY .ccache-files /root/.cache/ccache
 RUN apt-get update && \
     apt-get --yes --no-install-recommends --no-install-suggests install \
         curl \
