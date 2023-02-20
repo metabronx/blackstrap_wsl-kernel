@@ -1,2 +1,0 @@
-This directory caches compilation files between kernel builds with Github Actions.
-This file is dockerignored.

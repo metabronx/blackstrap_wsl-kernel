@@ -8,7 +8,7 @@ This kernel can be used wherever WSL needs to support applications that require 
 
 The Dockerfile pulls and builds the latest released version of the WSL Linux kernel from <https://github.com/microsoft/WSL2-Linux-Kernel>. Building the kernel takes 10-15 minutes.
 
-The built kernel is saved to `/kernel` within the image and can be copied out for use:
+The built kernel is saved to `/wsl-kernel` within the image and can be copied out for use:
 
 ```powershell
 # build
@@ -16,7 +16,7 @@ docker build . -t blackstrap-wsl-kernel
 
 # extract kernel image
 docker create --name blackstrap-wsl-kernel
-docker cp blackstrap-wsl-kernel:/kernel PATH_TO_SAVE
+docker cp blackstrap-wsl-kernel:/wsl-kernel PATH_TO_SAVE
 docker rm blackstrap-wsl-kernel
 ```
 

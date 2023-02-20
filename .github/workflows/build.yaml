@@ -1,9 +1,11 @@
 name: Build latest kernel
 
+# run when a push happens and semi-monthly
 on:
   push:
   schedule:
-    - cron: "59 23 15 * *"
+    - cron: "0 2 15 * *"
+    - cron: "0 2 28 * *"
 
 jobs:
   build:
@@ -14,11 +16,6 @@ jobs:
     steps:
       - name: Download repository
         uses: actions/checkout@v3
-      - name: Download intermediate build files
-        uses: actions/cache@v3
-        with:
-          path: .ccache-files
-          key: ccache-files
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
@@ -32,15 +29,3 @@ jobs:
         with:
           push: true
           tags: ghcr.io/metabronx/blackstrap-wsl-kernel:latest
-      - name: Extract cache files
-        if: always()
-        run: |
-          docker create --name wsl-kernel ghcr.io/metabronx/blackstrap-wsl-kernel:latest
-          docker cp wsl-kernel:/root/.cache/ccache .ccache-files
-          docker rm wsl-kernel
-      - name: Cache intermediate build files
-        uses: actions/cache/save@v3
-        if: always()
-        with:
-          path: .ccache-files
-          key: ccache-files
