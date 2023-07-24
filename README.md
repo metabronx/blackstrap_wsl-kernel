@@ -2,7 +2,7 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/metabronx/blackstrap-wsl-kernel/build.yaml?label=latest%20build&style=flat-square)
 
-A Windows Subsystem for Linux kernel originally built for blackstrap.
+A Windows Subsystem for Linux kernel originally built for blackstrap VPN.
 
 This kernel can be used wherever WSL needs to support applications that require `CONNMARK`, like Wireguard in Docker (<https://docs.linuxserver.io/images/docker-wireguard>).
 
