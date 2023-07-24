@@ -1,4 +1,4 @@
-# blackstrap-wsl-kernel
+# blackstrap WSL kernel
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/metabronx/blackstrap-wsl-kernel/build.yaml?label=latest%20build&style=flat-square)
 
